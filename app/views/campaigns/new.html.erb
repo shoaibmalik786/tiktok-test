@@ -1,0 +1,18 @@
+<%= form_with model: @campaign, local: true, class: "campaign-form" do |f| %>
+  <div class="campaign-container">
+    <h2>Create a New Campaign</h2>
+    <div class="input-group">
+      <%= f.label :name, "Campaign Name" %>
+      <%= f.text_field :name, placeholder: "Enter campaign name", required: true %>
+    </div>
+    <div class="input-group">
+      <%= f.label :description, "Description" %>
+      <%= f.text_area :description, placeholder: "Enter campaign description", rows: 4, required: true %>
+    </div>
+    <div class="input-group">
+      <%= f.label :landing_page_url, "Landing Page URL" %>
+      <%= f.url_field :landing_page_url, placeholder: "https://your-landing-page.com", required: true %>
+    </div>
+    <%= f.submit "Get Ads ideas", class: "submit-btn" %>
+  </div>
+<% end %>

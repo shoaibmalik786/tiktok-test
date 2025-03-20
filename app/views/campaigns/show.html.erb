@@ -1,0 +1,6 @@
+<%= turbo_stream_from "campaign-#{@campaign.id}" %>
+
+<div class="campaign-container">
+  <%= link_to 'Home', '/' %>
+  <%= render 'campaigns/campaign', campaign: @campaign, tiktok_campaigns: @tiktok_campaigns %>
+</div>

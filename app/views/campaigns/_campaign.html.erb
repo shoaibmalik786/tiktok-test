@@ -1,0 +1,55 @@
+<div id="campaign-item" data-controller="campaigns">
+  <h2><%= campaign.name %></h2>
+  <p><%= campaign.description %></p>
+  <a href="<%= campaign.landing_page_url %>" target="_blank" class="landing-page-link">Visit Landing Page</a>
+
+  <% if campaign.generating_prompts %>
+    <div class="wait">In progress..., We are generating ad ideas, reload the page after some time</div>
+  <% elsif campaign.ad_prompts.present? %>
+    <h3>Ad Ideas</h3>
+
+    <ul class="prompt-list">
+      <% campaign.ad_prompts.each do |ad_prompt| %>
+        <li class="prompt-item"><%= ad_prompt.content %></li>
+      <% end %>
+    </ul>
+
+    <%= link_to 'Get Images', generate_images_campaign_path(campaign), class: 'primary-btn', data: { 'turbo-method': :post } %>
+  <% else %>
+    <div>Regenerate prompts</div>
+  <% end %>
+
+  <div class="loader" data-campaigns-target="loader"></div>
+
+  <% if campaign.ad_items.present? %>
+    <%= form_tag publish_campaign_path, class: 'prompt_images_list' do %>
+      <% campaign.ad_items.each do |ad_item| %>
+        <div class="image_box">
+          <%= checkbox_tag 'ad_item_ids[]', ad_item.id, false, class: 'image_check' %>
+          <label class="image_label_box">
+            <% if ad_item.image.attached? %>
+              <%= image_tag ad_item.image, class: 'ad-item-image' %>
+            <% else %>
+              <div>
+                <div class="loader"></div>
+                <%= ad_item.image_generation_status %>
+              </div>
+            <% end %>
+          </label>
+        </div>
+      <% end %>
+
+      <div class="select-campaign">
+        <label>Select campaign</label>
+        <%= select_tag "tiktok_campaign_id", options_for_select(tiktok_campaigns.map{|c|[c['campaign_name'], c['campaign_id']]}), data: { 'campaigns-target': 'campaignSelect' }, prompt: "Please select" %>
+      </div>
+
+      <div class="select-adset">
+        <label>Select adset</label>
+        <%= select_tag "adset_id", options_for_select([]), data: { 'campaigns-target': 'adsetSelect' }, prompt: "Please select" %>
+      </div>
+
+      <%= submit_tag 'Publish Selected' %>
+    <% end %>
+  <% end %>
+</div>
