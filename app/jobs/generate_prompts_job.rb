@@ -1,5 +1,5 @@
 class GeneratePromptsJob < ApplicationJob
-  def perform(campaign_id:)
+  def perform(campaign_id:, retry_count: 0)
     campaign = Campaign.find(campaign_id)
 
     user_message = <<~MSG
@@ -42,10 +42,14 @@ class GeneratePromptsJob < ApplicationJob
       end
     rescue JSON::ParserError => e
       Rails.logger.error "JSON parsing error in GeneratePromptsJob: #{e.message}"
+
+      if retry_count < 3
+        GeneratePromptsJob.perform_later(campaign_id: campaign_id, retry_count: retry_count + 1)
+      end
     end
 
     campaign.update(generating_prompts: false)
 
-    Turbo::StreamsChannel.broadcast_replace_to("campaign-#{campaign.id}", target: "campaign-item", partial: 'campaigns/campaign', locals: { campaign: campaign })
+    # Turbo::StreamsChannel.broadcast_replace_to("campaign-#{campaign.id}", target: "campaign-item", partial: 'campaigns/campaign', locals: { campaign: campaign })
   end
 end

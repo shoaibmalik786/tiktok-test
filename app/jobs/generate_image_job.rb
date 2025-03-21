@@ -1,8 +1,8 @@
 class GenerateImageJob < ApplicationJob
-  def perform(ad_prompt_id:, model:, retry_count: 0)
-    ad_prompt = AdPrompt.find(ad_prompt_id)
-    ad_item = ad_prompt.ad_items.find_or_create_by(image_generation_model: model)
-    ad_item.update(image_generation_status: :started)
+  def perform(ad_item_id:, retry_count: 0)
+    ad_item = AdItem.find(ad_item_id)
+    model = ad_item.image_generation_model
+    ad_prompt = ad_item.ad_prompt
 
     prompt_content = ad_prompt.content + "\n- Size should be 1024 pixels (width) x 1792 pixels (height) \n - Image should be from only these formats 'jpg', 'png', 'jpeg'"
 
@@ -26,7 +26,7 @@ class GenerateImageJob < ApplicationJob
       ad_item.handle_image_generation(response)
     rescue => e
       if retry_count < 3
-        GenerateImageJob.set(wait: 10.seconds).perform_later(ad_prompt_id: ad_prompt_id, model: model, retry_count: retry_count + 1)
+        GenerateImageJob.set(wait: 10.seconds).perform_later(ad_item_id: ad_item_id, retry_count: retry_count + 1)
       end
     end
   end

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     member do
       post :generate_images
       post :publish
+      get :reload
     end
   end
 

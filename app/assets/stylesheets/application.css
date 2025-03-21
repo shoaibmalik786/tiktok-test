@@ -21,40 +21,54 @@ body {
   align-items: center;
   min-height: 100vh;
   margin: 0;
+  padding: 20px;
 }
+
 .campaign-container {
   background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 800px;
-  margin: 20px auto;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
   text-align: center;
 }
+
 h2, h3 {
   color: #333;
+  margin-bottom: 15px;
 }
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+
 .input-group {
   margin-bottom: 15px;
 }
+
 label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
   color: #555;
 }
-input, textarea {
+
+input, textarea, select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
+  background: #fff;
 }
+
+.primary-btn {
+  margin-bottom: 10px;
+}
+
 .submit-btn {
+  cursor: pointer;
+}
+
+.submit-btn, .primary-btn {
   width: 100%;
   padding: 10px;
   background: #007BFF;
@@ -64,23 +78,33 @@ input, textarea {
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  text-decoration: none;
 }
-.submit-btn:hover {
+
+.submit-btn:hover, .primary-btn:hover {
   background: #0056b3;
 }
+
 .landing-page-link {
-  display: block;
+  display: inline-block;
   margin: 10px 0;
   color: #007BFF;
   text-decoration: none;
 }
+
 .landing-page-link:hover {
   text-decoration: underline;
 }
+
 .prompt-list {
   list-style: none;
   padding: 0;
+  margin: 10px 0;
 }
+
 .prompt-item {
   background: #f4f4f4;
   padding: 10px;
@@ -92,13 +116,29 @@ input, textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  justify-content: center;
+}
+
+.prompt_images_list > div:has(.image_box) {
+  width: calc(25% - 12px);
+  min-height: 160px;
+  max-height: 160px;
+  position: relative;
+  transition: transform 0.2s;
 }
 
 .prompt_images_list .image_box {
-  width: calc(25% - 17px);
-  position: relative;
+  /*width: calc(25% - 12px);
   min-height: 160px;
   max-height: 160px;
+  position: relative;
+  transition: transform 0.2s;*/
+  width: 100%;
+  height: 100%;
+}
+
+.prompt_images_list .image_box:hover {
+  transform: scale(1.05);
 }
 
 .prompt_images_list .image_box .image_check {
@@ -106,8 +146,9 @@ input, textarea {
   top: 10px;
   right: 10px;
   margin: 0;
-  width: fit-content;
   cursor: pointer;
+  width: 18px;
+  height: 18px;
 }
 
 .prompt_images_list .image_box .image_check:checked + .image_label_box {
@@ -121,23 +162,62 @@ input, textarea {
   height: 100%;
   padding: 4px;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .prompt_images_list .image_box .image_label_box .ad-item-image {
   height: 100%;
   width: 100%;
   border-radius: inherit;
   object-fit: cover;
 }
+
+.select-campaign, .select-adset {
+  margin-top: 15px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.select-campaign label, .select-adset label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
 .loader {
   border: 4px solid transparent;
   border-top: 4px solid #3498db;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
+  width: 40px;
+  height: 40px;
+  animation: spin 1.5s linear infinite;
+  margin: auto;
+}
+
+.hidden {
+  display: none;
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+  .prompt_images_list .image_box {
+    width: calc(50% - 12px);
+  }
+}
+
+@media (max-width: 480px) {
+  .campaign-container {
+    padding: 15px;
+  }
+  
+  .prompt_images_list .image_box {
+    width: 100%;
+  }
 }

@@ -9,7 +9,7 @@ class AdItem < ApplicationRecord
   enum :image_generation_status, { started: 0, success: 1, failed: 2 }
 
   def attach_image(image_url)
-    mini_image = MiniMagick::Image.open(ActiveStorage::Blob.service.path_for(image.key))
+    mini_image = MiniMagick::Image.open(image_url)
     mini_image.resize "720x1280^"
   
     # Crop to exact dimensions
@@ -47,7 +47,7 @@ class AdItem < ApplicationRecord
   def handle_mid_journey_response(response)
     if response["data"]["status"] == 'pending'
       image_id = response['data']['id']
-      MidjourneyFetchImageJob.set(wait: 30.seconds).perform_later(image_id: image_id, ad_item_id: id)
+      MidjourneyFetchImageJob.set(wait: 10.seconds).perform_later(image_id: image_id, ad_item_id: id)
     else
       image_url = response["data"]["url"]
     end
@@ -74,7 +74,7 @@ class AdItem < ApplicationRecord
     if image.attached?
       image_id = TiktokApi.upload_image(ActiveStorage::Blob.service.path_for(image.key))
 
-      PublishTiktokAdJob.perform_later(campaign_id: campaign_id, adset_id: adset_id, image_id: image_id, ad_item_id: id)
+      PublishTiktokAdJob.perform_later(adset_id: adset_id, image_id: image_id, ad_item_id: id) if image_id
     end
   end
 end

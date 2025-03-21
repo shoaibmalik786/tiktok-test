@@ -14,8 +14,6 @@ class ReplicateFetchImageJob < ApplicationJob
         ad_item.update(image_generation_status: :failed)
       end
     else
-      ad_item = AdItem.find(ad_item_id)
-
       ad_item.attach_image(response["output"]) if response["output"].present?
     end
   end

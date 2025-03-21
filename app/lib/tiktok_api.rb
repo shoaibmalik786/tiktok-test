@@ -17,17 +17,17 @@ class TiktokApi
     CLIENT.adgroups.list(advertiser_id: ADVERTISER_ID, campaign_id: campaign_id)
   end
 
-  def self.upload_image(image_url)
+  def self.upload_image(image_path)
     response = CLIENT.images.upload(
       advertiser_id: ADVERTISER_ID,
-      image_file: File.open(image_url),
+      image_file: File.open(image_path),
       upload_type: 'UPLOAD_BY_FILE'
     )
 
     response['image_id']
   end
 
-  def self.create_ad(campaign_id:, adset_id:, image_id:, ad_item:)
+  def self.create_ad(adset_id:, image_id:, ad_item:)
     ad_prompt = ad_item.ad_prompt
     campaign = ad_prompt.campaign
 
@@ -45,7 +45,7 @@ class TiktokApi
     response = CLIENT.ads.create(
       advertiser_id: ADVERTISER_ID,
       adgroup_id: adset_id,
-      creatives: creatives.as_json
+      creatives: creatives
     )
   end
 end

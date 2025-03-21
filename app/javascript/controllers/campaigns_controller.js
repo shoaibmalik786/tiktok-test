@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['campaignSelect', 'adsetSelect', 'loader'];
+  static targets = ['campaignSelect', 'adsetSelect', 'loader', 'reload'];
 
   connect() {
     console.log("Campaigns controller connected!");
@@ -11,6 +11,10 @@ export default class extends Controller {
       this.reloadPageAfterDelay();
     } else {
       this.hideLoader();
+    }
+
+    if (this.hasGeneratingImages()) {
+      this.reloadPageAfterDelay();
     }
 
     const campaignSelect = this.campaignSelectTarget;
@@ -57,6 +61,12 @@ export default class extends Controller {
     return document.querySelector('.wait') !== null;
   }
 
+  hasGeneratingImages() {
+    // Check if the `campaign.generating_prompts` is true from the server-side rendered HTML.
+    // You can also modify this logic based on the campaign status.
+    return document.querySelector('.image-loader') !== null;
+  }
+
   showLoader() {
     this.loaderTarget.style.display = "block";  // Show loader
   }
@@ -66,9 +76,10 @@ export default class extends Controller {
   }
 
   reloadPageAfterDelay() {
-    // Reload the page after 5 seconds if waiting
+    const reload = this.reloadTarget;
+    // Reload the page after 10 seconds if waiting
     setTimeout(() => {
-      location.reload();
-    }, 5000);  // 5000 milliseconds = 5 seconds
+      reload.click();
+    }, 10000);
   }
 }
