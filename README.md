@@ -1,24 +1,57 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This README documents the necessary steps to get the application up and running.
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+To set up the project, run:
 
-* System dependencies
+```sh
+make setup
+```
 
-* Configuration
+This command installs dependencies, sets up the database, and configures the environment.
 
-* Database creation
+## Running the Server
 
-* Database initialization
+To start the application, run:
 
-* How to run the test suite
+```sh
+make server
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+This command launches the server and makes the application accessible.
 
-* Deployment instructions
+## Additional Information
 
-* ...
+### Ruby Version
+
+Specify the required Ruby version.
+
+### System Dependencies
+
+List dependencies required to run the application.
+
+### Configuration
+
+Mention any configuration steps necessary.
+
+### Database Creation & Initialization
+
+Explain how to create and initialize the database.
+
+### How to Run the Test Suite
+
+Provide instructions to run tests.
+
+### Services (Job Queues, Cache Servers, Search Engines, etc.)
+
+Detail any additional services used.
+
+### Deployment Instructions
+
+Include steps to deploy the application.
+
+### Additional Notes
+
+Any other relevant information can be added here.
