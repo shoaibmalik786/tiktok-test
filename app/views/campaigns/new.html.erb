@@ -3,16 +3,25 @@
     <h2>Create a New Campaign</h2>
     <div class="input-group">
       <%= f.label :name, "Campaign Name" %>
-      <%= f.text_field :name, placeholder: "Enter campaign name", required: true %>
+      <%= f.text_field :name, placeholder: "Enter campaign name" %>
     </div>
     <div class="input-group">
       <%= f.label :description, "Description" %>
-      <%= f.text_area :description, placeholder: "Enter campaign description", rows: 4, required: true %>
+      <%= f.text_area :description, placeholder: "Enter campaign description", rows: 4 %>
     </div>
     <div class="input-group">
       <%= f.label :landing_page_url, "Landing Page URL" %>
-      <%= f.url_field :landing_page_url, placeholder: "https://your-landing-page.com", required: true %>
+      <%= f.url_field :landing_page_url, placeholder: "https://your-landing-page.com" %>
     </div>
+
+    <div class="devider">OR</div>
+
+    <%= select_tag :campaign_id, 
+      options_from_collection_for_select(@campaigns, :id, :name), 
+      include_blank: "Select a Campaign", 
+      id: "campaignDropdown", 
+      class: "custom-dropdown" %>
+
     <%= f.submit "Get Ad ideas", class: "submit-btn" %>
   </div>
 <% end %>

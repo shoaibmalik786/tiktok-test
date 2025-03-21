@@ -3,13 +3,21 @@ class CampaignsController < ApplicationController
 
   def new
     @campaign = Campaign.new
+    @campaigns = Campaign.all
   end
 
   def create
-    @campaign = Campaign.new(campaign_params)
+    @campaign = if params[:campaign_id].present?
+      Campaign.find(params[:campaign_id])
+    else
+      Campaign.new(campaign_params)
+    end
+
+    @campaign.ad_prompts.destroy_all if @campaign.ad_prompts.present?
+
     if @campaign.save
       @campaign.generate_prompts
-      redirect_to @campaign, notice: 'Campaign was successfully created.'
+      redirect_to @campaign
     else
       render :new
     end

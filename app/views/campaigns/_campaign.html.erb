@@ -15,7 +15,8 @@
         <% end %>
       </ul>
 
-      <%= link_to 'Get Images', generate_images_campaign_path(campaign), class: 'primary-btn', data: { 'turbo-method': :post } %>
+      <% link_text = campaign.ad_items.present? ? 'Regenerate' : 'Get images' %>
+      <%= link_to link_text, generate_images_campaign_path(campaign), class: 'primary-btn', data: { 'turbo-method': :post } %>
     <% else %>
       <div>Regenerate prompts</div>
     <% end %>
