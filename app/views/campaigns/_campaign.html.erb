@@ -28,16 +28,17 @@
         <%= form_tag publish_campaign_path(campaign) do %>
           <div class="prompt_images_list">
             <% campaign.ad_items.each do |ad_item| %>
+              <% next if ad_item.failed? %>
               <div id="ad-item-<%= ad_item.id %>">
                 <div class='image_box'>
                   <%= checkbox_tag 'ad_item_ids[]', ad_item.id, false, class: 'image_check' %>
 
                   <label class="image_label_box">
-                    <% if ad_item.image.attached? %>
+                    <% if ad_item.success? %>
                       <%= image_tag ad_item.image, class: 'ad-item-image' %>
                     <% else %>
                       <div>
-                        <% if ad_item.image_generation_status == 'started' %>
+                        <% if ad_item.started? %>
                           <div class="loader image-loader"></div>
                         <% end %>
                         <%= ad_item.image_generation_status %>
